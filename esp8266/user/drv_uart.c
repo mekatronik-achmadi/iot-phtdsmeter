@@ -273,7 +273,9 @@ uart_response(uint8 inChar){
             "sub " \
             "pub " \
             "http " \
+            "httpy " \
             "adc " \
+            "sen " \
             "help";
 
     if(inChar == '\n' || inChar == '\r'){
@@ -335,9 +337,30 @@ uart_response(uint8 inChar){
                 os_printf("HTTP Disabled \r\n");
 #endif
             }
+            else if(os_strcmp(strReq,"httpy")==0){
+#if USE_HTTP
+                os_sprintf(url_req,"http://192.168.43.95:8050/");
+                os_printf("HTTP request to %s\r\n",url_req);
+                tcp_client_get(url_req);
+#else
+                os_printf("HTTP Disabled \r\n");
+#endif
+            }
             else if(os_strcmp(strReq,"adc")==0){
                 vadc = user_get_adc();
                 os_printf("[INFO] ADC Input: %4d\r\n",vadc);
+            }
+            else if(os_strcmp(strReq,"sen")==0){
+                vadc = user_get_adc();
+                os_printf("[INFO] ADC Input: %4d\r\n",vadc);
+
+#if USE_HTTP
+                os_sprintf(url_req,"http://192.168.43.95:8050/%d/%d/%d",vadc,vadc,vadc);
+                os_printf("HTTP request to %s\r\n",url_req);
+                tcp_client_get(url_req);
+#else
+                os_printf("HTTP Disabled \r\n");
+#endif
             }
             else if(os_strcmp("sysinfo",strReq)==0){
                 os_printf("\r\n\r\n[INFO] -------------------------------------------\r\n");
