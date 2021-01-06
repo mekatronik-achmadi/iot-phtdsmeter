@@ -41,6 +41,8 @@
 
 #include "user_config.h"
 
+#include "http_client.h"
+
 extern UartDevice UartDev;
 extern MQTT_Client mqttClient;
 
@@ -255,6 +257,7 @@ uart_response(uint8 inChar){
     uint8 i;
     uint8 bootmode;
     char strReq[32];
+    char url_req[32];
 
     const char cmdlist[]= "commands: "\
             "test "\
@@ -266,8 +269,9 @@ uart_response(uint8 inChar){
             "sleep "\
             "restart "\
             "sysinfo "\
-            "sub" \
-            "pub" \
+            "sub " \
+            "pub " \
+            "http "\
             "help";
 
     if(inChar == '\n' || inChar == '\r'){
@@ -306,11 +310,28 @@ uart_response(uint8 inChar){
                 system_restart();
             }
             else if(os_strcmp("sub",strReq)==0){
+#if USE_MQTT
                 MQTT_Subscribe(&mqttClient, "hello/world", 0);
                 os_printf("MQTT Subscribed: hello/world \r\n");
+#else
+                os_printf("MQTT Disabled \r\n");
+#endif
             }
             else if(os_strcmp("pub",strReq)==0){
+#if USE_MQTT
                 MQTT_Publish(&mqttClient, "hello/world", "hello_esp8266", 13, 0, 0);
+#else
+                os_printf("MQTT Disabled \r\n");
+#endif
+            }
+            else if(os_strcmp(strReq,"http")==0){
+#if USE_HTTP
+                os_sprintf(url_req,"http://192.168.43.95/");
+                os_printf("HTTP request to %s\r\n",url_req);
+                tcp_client_get(url_req);
+#else
+                os_printf("HTTP Disabled \r\n");
+#endif
             }
             else if(os_strcmp("sysinfo",strReq)==0){
                 os_printf("\r\n\r\n[INFO] -------------------------------------------\r\n");

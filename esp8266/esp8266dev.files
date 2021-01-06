@@ -15,6 +15,8 @@ mqtt/ringbuf.c
 mqtt/utils.c
 user/drv_uart.c
 user/drv_gpio16.c
+user/http_client.c
+user/http_client.h
 user/mqtt_client.c
 user/mqtt_client.h
 user/user.c

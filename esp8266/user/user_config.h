@@ -25,6 +25,9 @@
  */
 #define SERIALBAUD 9600
 
+#define USE_HTTP TRUE
+#define USE_MQTT FALSE
+
 #endif
 
 /** @} */

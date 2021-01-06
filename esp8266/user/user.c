@@ -32,6 +32,7 @@
 
 #include "wifi_sta.h"
 #include "user_config.h"
+#include "http_client.h"
 #include "mqtt_client.h"
 
 /**
@@ -86,7 +87,13 @@ void ICACHE_FLASH_ATTR user_init(){
     uart_rx_intr_enable(UART0);
     print_os_info();
 
+#if USE_MQTT
+    os_printf("MQTT used\r\n");
     mqttClientInit();
+#else
+    os_printf("HTTP used\r\n");
+#endif
+
     user_wifi_station_init();
 
     gpio16_output_conf();

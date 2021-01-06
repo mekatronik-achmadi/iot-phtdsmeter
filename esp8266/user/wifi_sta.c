@@ -56,8 +56,10 @@ LOCAL void ICACHE_FLASH_ATTR user_wifi_station_check_ip(void){
     if(wifi_status == STATION_GOT_IP && ipconfig.ip.addr !=0 ){
         if(ip_configured == 0){
             os_printf("got ip !!! \r\n");
-            os_printf("Connecting to MQTT Broker \r\n");
+#if USE_MQTT
+            os_printf("Connecting to a MQTT broker \r\n");
             mqttWifiConnectCb(STATION_GOT_IP);
+#endif
             ip_configured = 1;
         }
     }
@@ -83,10 +85,10 @@ LOCAL void ICACHE_FLASH_ATTR user_wifi_station_conf(void){
 
     wifi_station_get_config(&stationConf);
 
-    os_strcpy(ssid,"vibrastic");
+    os_strcpy(ssid,"CobaMQTT");
     os_memcpy(&stationConf.ssid, ssid, 32);
 
-    os_strcpy(password,"bismillah");
+    os_strcpy(password,"cobamqtt");
     os_memcpy(&stationConf.password, password, 64);
 
     wifi_station_set_config(&stationConf);

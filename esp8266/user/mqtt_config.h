@@ -43,4 +43,6 @@ typedef enum{
 #define PROTOCOL_NAMEv31    /*MQTT version 3.1 compatible with Mosquitto v0.15*/
 //PROTOCOL_NAMEv311            /*MQTT version 3.11 compatible with https://eclipse.org/paho/clients/testing/*/
 
+#define MQTT_TLS_LOG    FALSE
+
 #endif // __MQTT_CONFIG_H__
