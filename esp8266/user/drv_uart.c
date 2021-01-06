@@ -42,6 +42,7 @@
 #include "user_config.h"
 
 #include "http_client.h"
+#include "analog.h"
 
 extern UartDevice UartDev;
 extern MQTT_Client mqttClient;
@@ -271,7 +272,8 @@ uart_response(uint8 inChar){
             "sysinfo "\
             "sub " \
             "pub " \
-            "http "\
+            "http " \
+            "adc " \
             "help";
 
     if(inChar == '\n' || inChar == '\r'){
@@ -332,6 +334,10 @@ uart_response(uint8 inChar){
 #else
                 os_printf("HTTP Disabled \r\n");
 #endif
+            }
+            else if(os_strcmp(strReq,"adc")==0){
+                vadc = user_get_adc();
+                os_printf("[INFO] ADC Input: %4d\r\n",vadc);
             }
             else if(os_strcmp("sysinfo",strReq)==0){
                 os_printf("\r\n\r\n[INFO] -------------------------------------------\r\n");
