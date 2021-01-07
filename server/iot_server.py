@@ -4,9 +4,13 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import time
 import socket
 import numpy as np
+import mysql.connector as mysql
 
 hostName = socket.gethostbyname(socket.gethostname())
 serverPort = 8050
+
+tbl = mysql.connect(host = "localhost",user = "sqluser",passwd = "",database = "sensor")
+tblcsr = tbl.cursor()
 
 class MyServer(BaseHTTPRequestHandler):
 	def do_GET(self):
@@ -24,6 +28,9 @@ class MyServer(BaseHTTPRequestHandler):
 		adc_array = np.array([ int(str_adc_array[1]), int(str_adc_array[2]), int(str_adc_array[3]) ])
 		print('ADC array: ', end='')
 		print(adc_array)
+
+		tblcsr.execute("INSERT INTO adc(v0) VALUES (%s)" % (str_adc_array[1]))
+		tbl.commit()
 
 if __name__ == "__main__":
 	webServer = HTTPServer((hostName, serverPort), MyServer)
