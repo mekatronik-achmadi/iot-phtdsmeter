@@ -42,8 +42,8 @@
 #include "user_config.h"
 
 #include "http_client.h"
-#include "analog.h"
 #include "mux.h"
+#include "iot_data.h"
 
 extern UartDevice UartDev;
 extern MQTT_Client mqttClient;
@@ -67,11 +67,6 @@ uint8 uart_rx_cnt = 0;
  * @brief Receive response send flag
  */
 uint8 uart_rx_send = 0;
-
-/**
- * @brief UART ADC variable
- */
-uint16 vadc;
 
 /**
  * @brief Deep-Sleep time-out
@@ -261,6 +256,7 @@ uart_response(uint8 inChar){
     char strReq[32];
     char strArg[16];
     char url_req[32];
+    uint16 vadc;
 
     const char cmdlist[]= "commands: "\
             "test "\
@@ -279,6 +275,7 @@ uart_response(uint8 inChar){
             "adc " \
             "sen " \
             "mux " \
+            "loop " \
             "help";
 
     if(inChar == '\n' || inChar == '\r'){
@@ -350,11 +347,11 @@ uart_response(uint8 inChar){
 #endif
             }
             else if(os_strcmp(strReq,"adc")==0){
-                vadc = user_get_adc();
+                vadc = system_adc_read();
                 os_printf("[INFO] ADC Input: %4d\r\n",vadc);
             }
             else if(os_strcmp(strReq,"sen")==0){
-                vadc = user_get_adc();
+                vadc = system_adc_read();
                 os_printf("[INFO] ADC Input: %4d\r\n",vadc);
 
 #if USE_HTTP
@@ -369,6 +366,11 @@ uart_response(uint8 inChar){
                 uart_conf_parse(uart_rx_buffer,strArg,1);
                 os_printf("setting mux to channel %d\r\n",atoi(strArg));
                 mux_channel(atoi(strArg));
+            }
+            else if(os_strcmp(strReq,"loop")==0){
+                uart_conf_parse(uart_rx_buffer,strArg,1);
+                os_printf("setting data loop to option %d\r\n",atoi(strArg));
+                run_loop(atoi(strArg));
             }
             else if(os_strcmp("sysinfo",strReq)==0){
                 os_printf("\r\n\r\n[INFO] -------------------------------------------\r\n");

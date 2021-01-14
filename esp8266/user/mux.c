@@ -28,31 +28,31 @@ void mux_channel(uint8 channel){
             MUX_PIN_0 (MUX_S1);
             MUX_PIN_0 (MUX_S2);
             MUX_PIN_0 (MUX_S3);
-            break;
+        break;
 
         case 1:
             MUX_PIN_1 (MUX_S0);
             MUX_PIN_0 (MUX_S1);
             MUX_PIN_0 (MUX_S2);
             MUX_PIN_0 (MUX_S3);
-            break;
+        break;
 
         case 2:
             MUX_PIN_0 (MUX_S0);
             MUX_PIN_1 (MUX_S1);
             MUX_PIN_0 (MUX_S2);
             MUX_PIN_0 (MUX_S3);
-            break;
+        break;
 
         case 3:
             MUX_PIN_1 (MUX_S0);
             MUX_PIN_1 (MUX_S1);
             MUX_PIN_0 (MUX_S2);
             MUX_PIN_0 (MUX_S3);
-            break;
+        break;
 
         default:
             os_printf("mux channel number outside preset\r\n");
-            break;
+        break;
     }
 }

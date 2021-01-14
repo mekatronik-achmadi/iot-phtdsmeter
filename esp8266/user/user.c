@@ -35,6 +35,7 @@
 #include "http_client.h"
 #include "mqtt_client.h"
 #include "mux.h"
+#include "iot_data.h"
 
 /**
  * @brief LED-16 blinky timer
@@ -98,6 +99,7 @@ void ICACHE_FLASH_ATTR user_init(){
     user_wifi_station_init();
 
     mux_init();
+    run_loop(0);
 
     gpio16_output_conf();
     os_timer_setfn(&blinky_timer, (os_timer_func_t *)blinky_timer_handler, NULL);

@@ -27,6 +27,8 @@
 
 #define USE_HTTP TRUE
 #define USE_MQTT FALSE
+#define LOOP_MSG TRUE
+#define ADC_MEAN FALSE
 
 #endif
 

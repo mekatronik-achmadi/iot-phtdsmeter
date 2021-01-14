@@ -13,12 +13,12 @@ mqtt/proto.c
 mqtt/queue.c
 mqtt/ringbuf.c
 mqtt/utils.c
-user/analog.c
-user/analog.h
 user/drv_uart.c
 user/drv_gpio16.c
 user/http_client.c
 user/http_client.h
+user/iot_data.c
+user/iot_data.h
 user/mqtt_client.c
 user/mqtt_client.h
 user/mux.c
