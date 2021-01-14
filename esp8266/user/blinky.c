@@ -9,6 +9,14 @@
 
  */
 
+/**
+ * @file    blink.c
+ * @brief   LED Indicator code.
+ *
+ * @addtogroup IO
+ * @{
+ */
+
 #include "ets_sys.h"
 #include "osapi.h"
 #include "gpio.h"
@@ -135,3 +143,4 @@ void blinky_init(void){
     blinky_loop_stop();
     blinky_wifi_disconnect();
 }
+/** @} */

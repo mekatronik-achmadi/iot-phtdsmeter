@@ -26,7 +26,7 @@
  * @file    drv_uart.c
  * @brief   GPIO 16 Driver code.
  *
- * @addtogroup Indicator
+ * @addtogroup IO
  * @{
  */
 

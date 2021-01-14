@@ -1,3 +1,22 @@
+/*
+              UNKNOWN PUBLIC LICENSE
+
+ Copyright (C) 2020 Achmadi S.T. M.T.
+
+ Currently no license applied because author liv in
+ Indonesia, a country which doesn't really concern
+ about digital content copyright.
+
+ */
+
+/**
+ * @file    mux.c
+ * @brief   HC4067 mux code.
+ *
+ * @addtogroup IO
+ * @{
+ */
+
 #include "ets_sys.h"
 #include "osapi.h"
 #include "gpio.h"
@@ -5,6 +24,9 @@
 
 #include "mux.h"
 
+/**
+ * @brief Initiate pin for mux selector
+ */
 void mux_init(void){
     PIN_FUNC_SELECT(PERIPHS_IO_MUX_MTDO_U, FUNC_GPIO15); //Mux S0
     PIN_FUNC_SELECT(PERIPHS_IO_MUX_MTCK_U, FUNC_GPIO13); //Mux S1
@@ -19,6 +41,10 @@ void mux_init(void){
     mux_channel(0);
 }
 
+/**
+ * @brief Set Mux active channel
+ * @param channel
+ */
 void mux_channel(uint8 channel){
 
     switch(channel){
@@ -56,3 +82,4 @@ void mux_channel(uint8 channel){
         break;
     }
 }
+/** @} */

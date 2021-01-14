@@ -1,7 +1,7 @@
 /*
               UNKNOWN PUBLIC LICENSE
 
- Copyright (C) 2019 Wira S.T. M.T.
+ Copyright (C) 2020 Achmadi S.T. M.T.
 
  Currently no license applied because author liv in
  Indonesia, a country which doesn't really concern
@@ -10,10 +10,10 @@
  */
 
 /**
- * @file    client.h
- * @brief   TCP Client header.
+ * @file    http_client.h
+ * @brief   HTTP CLient header.
  *
- * @addtogroup Webclient
+ * @addtogroup IoT
  * @{
  */
 

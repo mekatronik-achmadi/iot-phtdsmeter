@@ -1,3 +1,22 @@
+/*
+              UNKNOWN PUBLIC LICENSE
+
+ Copyright (C) 2020 Achmadi S.T. M.T.
+
+ Currently no license applied because author liv in
+ Indonesia, a country which doesn't really concern
+ about digital content copyright.
+
+ */
+
+/**
+ * @file    mqtt_config.h
+ * @brief   MQTT Global config header.
+ *
+ * @addtogroup IoT
+ * @{
+ */
+
 #ifndef __MQTT_CONFIG_H__
 #define __MQTT_CONFIG_H__
 
@@ -46,3 +65,4 @@ typedef enum{
 #define MQTT_TLS_LOG    FALSE
 
 #endif // __MQTT_CONFIG_H__
+/** @} */

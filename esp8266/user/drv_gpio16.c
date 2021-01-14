@@ -26,7 +26,7 @@
  * @file    drv_gpio16.c
  * @brief   GPIO 16 Driver code.
  *
- * @addtogroup Indicator
+ * @addtogroup IO
  * @{
  */
 

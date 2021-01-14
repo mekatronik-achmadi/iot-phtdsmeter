@@ -1,3 +1,22 @@
+/*
+              UNKNOWN PUBLIC LICENSE
+
+ Copyright (C) 2020 Achmadi S.T. M.T.
+
+ Currently no license applied because author liv in
+ Indonesia, a country which doesn't really concern
+ about digital content copyright.
+
+ */
+
+/**
+ * @file    iot_data.c
+ * @brief   Main data processing code.
+ *
+ * @addtogroup IoT
+ * @{
+ */
+
 #include "ets_sys.h"
 #include "osapi.h"
 #include "gpio.h"
@@ -19,10 +38,34 @@
 #include "iot_data.h"
 #include "blinky.h"
 
+/**
+ * @brief Timer for Data loop
+ */
 LOCAL os_timer_t data_timer;
 
-LOCAL uint16 vadc0, vadc1, vadc2, vadc3; // Po, Do, To, TDS
+/**
+ * @brief ADC for PH output
+ */
+LOCAL uint16 vadc0;
 
+/**
+ * @brief ADC for limiter output
+ */
+LOCAL uint16 vadc1;
+
+/**
+ * @brief ADC for Temp output
+ */
+LOCAL uint16 vadc2;
+
+/**
+ * @brief ADC for TDS output
+ */
+LOCAL uint16 vadc3;
+
+/**
+ * @brief Loop timer handler function
+ */
 LOCAL void ICACHE_FLASH_ATTR data_timer_handler(void *prv){
 
     mux_channel(0); vadc0 = system_adc_read();
@@ -35,6 +78,11 @@ LOCAL void ICACHE_FLASH_ATTR data_timer_handler(void *prv){
 #endif
 }
 
+/**
+ * @brief Loop starter function
+ * @param uint8 Interval option
+ * @details Options: 0 (stop), 1 (500ms), 2 (5s)
+ */
 void run_loop(uint8 interval){
 
     switch(interval){
@@ -67,3 +115,4 @@ void run_loop(uint8 interval){
         break;
     }
 }
+/** @} */

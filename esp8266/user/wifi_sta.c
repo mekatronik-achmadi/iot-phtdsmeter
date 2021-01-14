@@ -1,7 +1,7 @@
 /*
               UNKNOWN PUBLIC LICENSE
 
- Copyright (C) 2019 Wira S.T. M.T.
+ Copyright (C) 2020 Achmadi S.T. M.T.
 
  Currently no license applied because author liv in
  Indonesia, a country which doesn't really concern
@@ -13,7 +13,7 @@
  * @file    wifi_sta.c
  * @brief   Wifi Station code.
  *
- * @addtogroup Network
+ * @addtogroup IoT
  * @{
  */
 
@@ -59,12 +59,13 @@ LOCAL void ICACHE_FLASH_ATTR user_wifi_station_check_ip(void){
     if(wifi_status == STATION_GOT_IP && ipconfig.ip.addr !=0 ){
         if(ip_configured == 0){
             os_printf("got ip !!! \r\n");
+            ip_configured = 1;
+            led_disconnect = 0;
 #if USE_MQTT
             os_printf("Connecting to a MQTT broker \r\n");
             mqttWifiConnectCb(STATION_GOT_IP);
 #endif
-            ip_configured = 1;
-            led_disconnect = 0;
+
             blinky_wifi_connect();
         }
     }
@@ -74,6 +75,9 @@ LOCAL void ICACHE_FLASH_ATTR user_wifi_station_check_ip(void){
             os_printf("ip lost!!! \r\n");
             blinky_wifi_disconnect();
             led_disconnect = 1;
+#if USE_MQTT
+            mqttWifiConnectCb(0);
+#endif
         }
     }
 

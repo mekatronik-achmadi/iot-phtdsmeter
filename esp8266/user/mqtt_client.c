@@ -1,11 +1,36 @@
+/*
+              UNKNOWN PUBLIC LICENSE
+
+ Copyright (C) 2020 Achmadi S.T. M.T.
+
+ Currently no license applied because author liv in
+ Indonesia, a country which doesn't really concern
+ about digital content copyright.
+
+ */
+
+/**
+ * @file    mqtt_client.c
+ * @brief   MQTT handler code.
+ *
+ * @addtogroup IoT
+ * @{
+ */
+
 #include "ets_sys.h"
 #include "osapi.h"
 #include "mqtt.h"
 #include "user_interface.h"
 #include "mem.h"
 
+/**
+ * @brief Global MQTT object
+ */
 MQTT_Client mqttClient;
 
+/**
+ * @brief MQTT Broker connected callback
+ */
 LOCAL void mqttConnectedCb(uint32_t *args){
     MQTT_Client* client = (MQTT_Client*)args;
     os_printf("MQTT: Connected\r\n");
@@ -13,16 +38,25 @@ LOCAL void mqttConnectedCb(uint32_t *args){
     MQTT_Publish(client, "hello/world", "hello_mqtt", 10, 0, 0);
 }
 
+/**
+ * @brief MQTT Broker disconnected callback
+ */
 LOCAL void mqttDisconnectedCb(uint32_t *args){
     MQTT_Client* client = (MQTT_Client*)args;
     os_printf("MQTT: Disconnected\r\n");
 }
 
+/**
+ * @brief MQTT message published callback
+ */
 LOCAL void mqttPublishedCb(uint32_t *args){
     MQTT_Client* client = (MQTT_Client*)args;
     os_printf("MQTT: Published\r\n");
 }
 
+/**
+ * @brief MQTT message received callback
+ */
 LOCAL void mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len, const char *data, uint32_t data_len){
     char *topicBuf = (char*)os_zalloc(topic_len+1),
             *dataBuf = (char*)os_zalloc(data_len+1);
@@ -40,6 +74,10 @@ LOCAL void mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len, con
     os_free(dataBuf);
 }
 
+/**
+ * @brief Callback to connect to Broker as wifi connected
+ * @param uint8 IP status
+ */
 void mqttWifiConnectCb(uint8_t status){
     if(status == STATION_GOT_IP){
         MQTT_Connect(&mqttClient);
@@ -49,6 +87,9 @@ void mqttWifiConnectCb(uint8_t status){
     }
 }
 
+/**
+ * @brief MQTT Client initiate
+ */
 void mqttClientInit(void){
     MQTT_InitConnection(&mqttClient, "192.168.50.245", 1883, 0);
     MQTT_InitClient(&mqttClient, "esp8266", NULL, NULL, 120, 0);
@@ -61,3 +102,4 @@ void mqttClientInit(void){
     os_printf("MQTT Done!! \r\n");
 }
 
+/** @} */
