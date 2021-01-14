@@ -17,6 +17,7 @@
 #include "mqtt_client.h"
 #include "mux.h"
 #include "iot_data.h"
+#include "blinky.h"
 
 LOCAL os_timer_t data_timer;
 
@@ -40,6 +41,7 @@ void run_loop(uint8 interval){
         case 0:
             os_timer_disarm(&data_timer);
             os_printf("data loop stopped\r\n");
+            blinky_loop_stop();
         break;
 
         case 1:
@@ -47,6 +49,7 @@ void run_loop(uint8 interval){
             os_timer_setfn(&data_timer, (os_timer_func_t *)data_timer_handler, NULL);
             os_timer_arm(&data_timer, 500, 1);
             os_printf("data loop every 500ms\r\n");
+            blinky_loop_run();
         break;
 
         case 2:
@@ -54,11 +57,13 @@ void run_loop(uint8 interval){
             os_timer_setfn(&data_timer, (os_timer_func_t *)data_timer_handler, NULL);
             os_timer_arm(&data_timer, 5000, 1);
             os_printf("data loop every 5s\r\n");
+            blinky_loop_run();
         break;
 
         default:
             os_timer_disarm(&data_timer);
             os_printf("data loop option unrecognized\r\n");
+            blinky_loop_stop();
         break;
     }
 }

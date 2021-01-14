@@ -28,7 +28,6 @@
 #include "user_interface.h"
 
 #include "driver/uart.h"
-#include "driver/gpio16.h"
 
 #include "wifi_sta.h"
 #include "user_config.h"
@@ -36,24 +35,7 @@
 #include "mqtt_client.h"
 #include "mux.h"
 #include "iot_data.h"
-
-/**
- * @brief LED-16 blinky timer
- */
-LOCAL os_timer_t blinky_timer;
-
-/**
- * @brief LED-16 blinky flag
- */
-LOCAL uint8 blink_led = 0;
-
-/**
- * @brief LED-16 blinky handler
- */
-LOCAL void ICACHE_FLASH_ATTR blinky_timer_handler(void *prv){
-    if (blink_led==1) { gpio16_output_set(1); blink_led=0; }
-    else { gpio16_output_set(0); blink_led=1; }
-}
+#include "blinky.h"
 
 /**
  * @brief Print some OS information
@@ -101,8 +83,6 @@ void ICACHE_FLASH_ATTR user_init(){
     mux_init();
     run_loop(0);
 
-    gpio16_output_conf();
-    os_timer_setfn(&blinky_timer, (os_timer_func_t *)blinky_timer_handler, NULL);
-    os_timer_arm(&blinky_timer, 500, 1);
+    blinky_init();
 }
 /** @} */

@@ -29,6 +29,7 @@
 #include "user_config.h"
 #include "wifi_sta.h"
 #include "mqtt_client.h"
+#include "blinky.h"
 
 /**
  * @brief Test IP routine timer
@@ -39,6 +40,8 @@ LOCAL os_timer_t ip_test_timer;
  * @brief ip_configured
  */
 LOCAL uint8 ip_configured = 0;
+
+LOCAL uint8 led_disconnect = 1;
 
 /**
  * @brief Wifi Station IP check routine
@@ -61,10 +64,17 @@ LOCAL void ICACHE_FLASH_ATTR user_wifi_station_check_ip(void){
             mqttWifiConnectCb(STATION_GOT_IP);
 #endif
             ip_configured = 1;
+            led_disconnect = 0;
+            blinky_wifi_connect();
         }
     }
     else{
         ip_configured = 0;
+        if(led_disconnect==0){
+            os_printf("ip lost!!! \r\n");
+            blinky_wifi_disconnect();
+            led_disconnect = 1;
+        }
     }
 
     os_timer_setfn(&ip_test_timer, (os_timer_func_t *)user_wifi_station_check_ip, NULL);
