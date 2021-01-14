@@ -43,6 +43,7 @@
 
 #include "http_client.h"
 #include "analog.h"
+#include "mux.h"
 
 extern UartDevice UartDev;
 extern MQTT_Client mqttClient;
@@ -258,6 +259,7 @@ uart_response(uint8 inChar){
     uint8 i;
     uint8 bootmode;
     char strReq[32];
+    char strArg[16];
     char url_req[32];
 
     const char cmdlist[]= "commands: "\
@@ -276,6 +278,7 @@ uart_response(uint8 inChar){
             "httpy " \
             "adc " \
             "sen " \
+            "mux " \
             "help";
 
     if(inChar == '\n' || inChar == '\r'){
@@ -361,6 +364,11 @@ uart_response(uint8 inChar){
 #else
                 os_printf("HTTP Disabled \r\n");
 #endif
+            }
+            else if(os_strcmp(strReq,"mux")==0){
+                uart_conf_parse(uart_rx_buffer,strArg,1);
+                os_printf("setting mux to channel %d\r\n",atoi(strArg));
+                mux_channel(atoi(strArg));
             }
             else if(os_strcmp("sysinfo",strReq)==0){
                 os_printf("\r\n\r\n[INFO] -------------------------------------------\r\n");

@@ -21,6 +21,8 @@ user/http_client.c
 user/http_client.h
 user/mqtt_client.c
 user/mqtt_client.h
+user/mux.c
+user/mux.h
 user/user.c
 user/user_config.h
 user/mqtt_config.h
