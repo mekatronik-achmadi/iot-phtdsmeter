@@ -32,15 +32,18 @@
 #include "blinky.h"
 
 /**
+ * @brief ip_configured
+ */
+uint8 ip_configured = 0;
+
+/**
  * @brief Test IP routine timer
  */
 LOCAL os_timer_t ip_test_timer;
 
 /**
- * @brief ip_configured
+ * @brief led_disconnect
  */
-LOCAL uint8 ip_configured = 0;
-
 LOCAL uint8 led_disconnect = 1;
 
 /**
@@ -99,10 +102,10 @@ LOCAL void ICACHE_FLASH_ATTR user_wifi_station_conf(void){
 
     wifi_station_get_config(&stationConf);
 
-    os_strcpy(ssid,"CobaMQTT");
+    os_strcpy(ssid,WIFI_SSID);
     os_memcpy(&stationConf.ssid, ssid, 32);
 
-    os_strcpy(password,"cobamqtt");
+    os_strcpy(password,WiFI_PASS);
     os_memcpy(&stationConf.password, password, 64);
 
     wifi_station_set_config(&stationConf);

@@ -47,6 +47,7 @@
 
 extern UartDevice UartDev;
 extern MQTT_Client mqttClient;
+extern uint8 ip_configured;
 
 /**
  * @brief UART receive buffer size
@@ -257,6 +258,7 @@ uart_response(uint8 inChar){
     char strArg[16];
     char url_req[32];
     uint16 vadc;
+    uint16 vadc0,vadc1,vadc2,vadc3;
 
     const char cmdlist[]= "commands: "\
             "test "\
@@ -270,11 +272,10 @@ uart_response(uint8 inChar){
             "sysinfo "\
             "sub " \
             "pub " \
-            "http " \
-            "httpy " \
             "adc " \
-            "sen " \
             "mux " \
+            "htsend " \
+            "htclr " \
             "loop " \
             "help";
 
@@ -328,39 +329,9 @@ uart_response(uint8 inChar){
                 os_printf("MQTT Disabled \r\n");
 #endif
             }
-            else if(os_strcmp(strReq,"http")==0){
-#if USE_HTTP
-                os_sprintf(url_req,"http://192.168.43.95/");
-                os_printf("HTTP request to %s\r\n",url_req);
-                tcp_client_get(url_req);
-#else
-                os_printf("HTTP Disabled \r\n");
-#endif
-            }
-            else if(os_strcmp(strReq,"httpy")==0){
-#if USE_HTTP
-                os_sprintf(url_req,"http://192.168.43.95:8050/");
-                os_printf("HTTP request to %s\r\n",url_req);
-                tcp_client_get(url_req);
-#else
-                os_printf("HTTP Disabled \r\n");
-#endif
-            }
             else if(os_strcmp(strReq,"adc")==0){
                 vadc = system_adc_read();
                 os_printf("[INFO] ADC Input: %4d\r\n",vadc);
-            }
-            else if(os_strcmp(strReq,"sen")==0){
-                vadc = system_adc_read();
-                os_printf("[INFO] ADC Input: %4d\r\n",vadc);
-
-#if USE_HTTP
-                os_sprintf(url_req,"http://192.168.43.95:8050/%d/%d/%d",vadc,vadc,vadc);
-                os_printf("HTTP request to %s\r\n",url_req);
-                tcp_client_get(url_req);
-#else
-                os_printf("HTTP Disabled \r\n");
-#endif
             }
             else if(os_strcmp(strReq,"mux")==0){
                 uart_conf_parse(uart_rx_buffer,strArg,1);
@@ -371,6 +342,50 @@ uart_response(uint8 inChar){
                 uart_conf_parse(uart_rx_buffer,strArg,1);
                 os_printf("setting data loop to option %d\r\n",atoi(strArg));
                 run_loop(atoi(strArg));
+            }
+            else if(os_strcmp(strReq,"htsend")==0){
+
+                mux_channel(0); vadc0 = SCALE_PH*system_adc_read()-OFSET_PH;
+                mux_channel(1); vadc1 = SCALE_NTC*system_adc_read()-OFSET_NTC;
+                mux_channel(2); vadc2 = SCALE_T*system_adc_read()-OFSET_T;
+                mux_channel(3); vadc3 = SCALE_TDS*system_adc_read()-OFSET_TDS;
+
+#if USE_HTTP
+                if(ip_configured==1){
+ #ifdef HTTP_PORT
+                    os_sprintf(url_req,"%s:%s/%d/%d/%d/%d/",HTTP_SERV,HTTP_PORT,vadc0,vadc1,vadc2,vadc3);
+ #else
+                    os_sprintf(url_req,"%s/%d/%d/%d/%d/",HTTP_SERV,vadc0,vadc1,vadc2,vadc3);
+ #endif
+
+                    os_printf("HTTP request to %s\r\n",url_req);
+                    tcp_client_get(url_req);
+                }
+                else{
+                    os_printf("HTTP Not Connected \r\n");
+                }
+#else
+                os_printf("HTTP Disabled \r\n");
+#endif
+            }
+            else if(os_strcmp(strReq,"htclr")==0){
+#if USE_HTTP
+                if(ip_configured==1){
+ #ifdef HTTP_PORT
+                    os_sprintf(url_req,"%s:%s/reset",HTTP_SERV,HTTP_PORT);
+ #else
+                    os_sprintf(url_req,"%s/reset",HTTP_SERV);
+ #endif
+
+                    os_printf("HTTP request to %s\r\n",url_req);
+                    tcp_client_get(url_req);
+                }
+                else{
+                    os_printf("HTTP Not Connected \r\n");
+                }
+#else
+                os_printf("HTTP Disabled \r\n");
+#endif
             }
             else if(os_strcmp("sysinfo",strReq)==0){
                 os_printf("\r\n\r\n[INFO] -------------------------------------------\r\n");

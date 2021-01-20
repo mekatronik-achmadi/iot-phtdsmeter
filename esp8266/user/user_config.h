@@ -30,6 +30,14 @@
 #define LOOP_MSG TRUE
 #define ADC_MEAN FALSE
 
+#define WIFI_SSID "vibrastic"
+#define WiFI_PASS "bismillah"
+
+#define HTTP_SERV   "http://192.168.50.245"
+#define HTTP_PORT   "9000"
+
+#define MQTT_BROKER "http://0.0.0.0"
+
 #endif
 
 /** @} */

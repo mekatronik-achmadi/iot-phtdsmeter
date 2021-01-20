@@ -19,6 +19,16 @@
 #ifndef IOT_DATA_H
 #define IOT_DATA_H
 
+#define SCALE_PH    1
+#define SCALE_NTC   1
+#define SCALE_T     1
+#define SCALE_TDS   1
+
+#define OFSET_PH    0
+#define OFSET_NTC   0
+#define OFSET_T     0
+#define OFSET_TDS   0
+
 void run_loop(uint8 interval);
 
 #endif // IOT_DATA_H
