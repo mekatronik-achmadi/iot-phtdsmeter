@@ -42,7 +42,7 @@ LOCAL void mqttConnectedCb(uint32_t *args){
  * @brief MQTT Broker disconnected callback
  */
 LOCAL void mqttDisconnectedCb(uint32_t *args){
-    MQTT_Client* client = (MQTT_Client*)args;
+    (void) args;
     os_printf("MQTT: Disconnected\r\n");
 }
 
@@ -50,7 +50,7 @@ LOCAL void mqttDisconnectedCb(uint32_t *args){
  * @brief MQTT message published callback
  */
 LOCAL void mqttPublishedCb(uint32_t *args){
-    MQTT_Client* client = (MQTT_Client*)args;
+    (void) args;
     os_printf("MQTT: Published\r\n");
 }
 
@@ -58,10 +58,9 @@ LOCAL void mqttPublishedCb(uint32_t *args){
  * @brief MQTT message received callback
  */
 LOCAL void mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len, const char *data, uint32_t data_len){
+    (void) args;
     char *topicBuf = (char*)os_zalloc(topic_len+1),
             *dataBuf = (char*)os_zalloc(data_len+1);
-
-    MQTT_Client* client = (MQTT_Client*)args;
 
     os_memcpy(topicBuf, topic, topic_len);
     topicBuf[topic_len] = 0;
@@ -91,8 +90,11 @@ void mqttWifiConnectCb(uint8_t status){
  * @brief MQTT Client initiate
  */
 void mqttClientInit(void){
-    MQTT_InitConnection(&mqttClient, "192.168.50.245", 1883, 0);
-    MQTT_InitClient(&mqttClient, "esp8266", NULL, NULL, 120, 0);
+    uint8_t broker_ip[] = MQTT_BROKER;
+    uint8_t client_name[] = MQTT_NAME;
+
+    MQTT_InitConnection(&mqttClient, broker_ip, 1883, 0);
+    MQTT_InitClient(&mqttClient, client_name, NULL, NULL, 120, 0);
 
     MQTT_OnConnected(&mqttClient, mqttConnectedCb);
     MQTT_OnDisconnected(&mqttClient, mqttDisconnectedCb);

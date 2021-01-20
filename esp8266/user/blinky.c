@@ -28,7 +28,6 @@
 #include "user_interface.h"
 
 #include "driver/gpio16.h"
-
 #include "blinky.h"
 
 /**
@@ -44,17 +43,19 @@ LOCAL os_timer_t wifi_timer;
 /**
  * @brief LED-16 blinky flag
  */
-LOCAL uint8 blink_led = 0;
+LOCAL uint8_t blink_led = 0;
 
 /**
  * @brief Conn blinky flag
  */
-LOCAL uint8 wifi_led = 0;
+LOCAL uint8_t wifi_led = 0;
 
 /**
  * @brief LED-16 blinky handler
  */
 LOCAL void ICACHE_FLASH_ATTR blinky_standby_handler(void *prv){
+    (void) prv;
+
     if (blink_led==1) { gpio16_output_set(1); blink_led=0; }
     else { gpio16_output_set(0); blink_led=1; }
 }
@@ -63,6 +64,8 @@ LOCAL void ICACHE_FLASH_ATTR blinky_standby_handler(void *prv){
  * @brief wifi disconnect handler
  */
 LOCAL void ICACHE_FLASH_ATTR wifi_standby_handler(void *prv){
+    (void) prv;
+
     if(wifi_led==17 || wifi_led==19) {
         gpio_output_set(BIT2, 0, BIT2, 0);
 
@@ -83,6 +86,8 @@ LOCAL void ICACHE_FLASH_ATTR wifi_standby_handler(void *prv){
  * @brief wifi connect handler
  */
 LOCAL void ICACHE_FLASH_ATTR wifi_connect_handler(void *prv){
+    (void) prv;
+
     if (wifi_led==1) { gpio_output_set(0, BIT2, BIT2, 0); wifi_led=0; }
     else { gpio_output_set(BIT2, 0, BIT2, 0); wifi_led=1; }
 }

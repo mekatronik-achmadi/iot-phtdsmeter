@@ -20,6 +20,8 @@
 #ifndef MQTT_CLIENT_H
 #define MQTT_CLIENT_H
 
+#include <stdint.h>
+
 void mqttWifiConnectCb(uint8_t status);
 void mqttClientInit(void);
 

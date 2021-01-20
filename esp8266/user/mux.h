@@ -20,6 +20,8 @@
 #ifndef MUX_H
 #define MUX_H
 
+#include <stdint.h>
+
 #define MUX_S0 BIT15
 #define MUX_S1 BIT13 //MTCK_U //GPIO13
 #define MUX_S2 BIT12 //MTDI_U //GPIO12
@@ -29,7 +31,7 @@
 #define MUX_PIN_0(PIN_NUM) gpio_output_set(0, PIN_NUM, PIN_NUM, 0)
 
 void mux_init(void);
-void mux_channel(uint8 channel);
+void mux_channel(uint8_t channel);
 
 #endif // MUX_H
 /** @} */

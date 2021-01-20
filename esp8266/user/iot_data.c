@@ -38,7 +38,7 @@
 #include "iot_data.h"
 #include "blinky.h"
 
-extern uint8 ip_configured;
+extern uint8_t ip_configured;
 
 /**
  * @brief Timer for Data loop
@@ -48,27 +48,28 @@ LOCAL os_timer_t data_timer;
 /**
  * @brief ADC for PH output
  */
-LOCAL uint16 vadc0;
+LOCAL uint16_t vadc0;
 
 /**
  * @brief ADC for limiter output
  */
-LOCAL uint16 vadc1;
+LOCAL uint16_t vadc1;
 
 /**
  * @brief ADC for Temp output
  */
-LOCAL uint16 vadc2;
+LOCAL uint16_t vadc2;
 
 /**
  * @brief ADC for TDS output
  */
-LOCAL uint16 vadc3;
+LOCAL uint16_t vadc3;
 
 /**
  * @brief Loop timer handler function
  */
 LOCAL void ICACHE_FLASH_ATTR data_timer_handler(void *prv){
+    (void) prv;
     char url_req[32];
 
     mux_channel(0); vadc0 = SCALE_PH*system_adc_read()-OFSET_PH;
@@ -102,7 +103,7 @@ LOCAL void ICACHE_FLASH_ATTR data_timer_handler(void *prv){
  * @param uint8 Interval option
  * @details Options: 0 (stop), 1 (10s), 2 (30s), 3 (1m),
  */
-void run_loop(uint8 interval){
+void run_loop(uint8_t interval){
 
     switch(interval){
         case 0:

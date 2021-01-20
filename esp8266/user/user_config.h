@@ -37,6 +37,7 @@
 #define HTTP_PORT   "9000"
 
 #define MQTT_BROKER "http://0.0.0.0"
+#define MQTT_NAME   "esp8266"
 
 #endif
 

@@ -45,7 +45,7 @@ void mux_init(void){
  * @brief Set Mux active channel
  * @param channel
  */
-void mux_channel(uint8 channel){
+void mux_channel(uint8_t channel){
 
     switch(channel){
 

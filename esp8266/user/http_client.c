@@ -17,6 +17,8 @@
  * @{
  */
 
+#include <stdlib.h>
+
 #include "ets_sys.h"
 #include "osapi.h"
 #include "gpio.h"
@@ -157,7 +159,6 @@ LOCAL int ICACHE_FLASH_ATTR chunked_decode(char * chunked, int size){
  * @brief TCP Client Receive Callback
  */
 LOCAL void ICACHE_FLASH_ATTR tcp_client_revcb(void * arg, char * buf, unsigned short len){
-    char json_out[2048];
     struct espconn * conn = (struct espconn *)arg;
     request_args * req = (request_args *)conn->reverse;
 
@@ -205,7 +206,7 @@ LOCAL void ICACHE_FLASH_ATTR tcp_client_sentcb(void * arg){
         else
             espconn_sent(conn, (uint8_t *)req->post_data, strlen(req->post_data));
 
-        os_printf(req->post_data);
+        os_printf("%s", req->post_data);
 
         os_free(req->post_data);
         req->post_data = NULL;
@@ -229,7 +230,7 @@ LOCAL void ICACHE_FLASH_ATTR tcp_client_conncb(void * arg){
 
     if(req->post_data != NULL){
         method = "POST";
-        os_sprintf(post_headers, "Content-Length: %d\r\n", strlen(req->post_data));
+        os_sprintf(post_headers, "Content-Length: %lu\r\n", strlen(req->post_data));
     }
 
     if(req->headers == NULL){
@@ -255,7 +256,7 @@ LOCAL void ICACHE_FLASH_ATTR tcp_client_conncb(void * arg){
         espconn_sent(conn, (uint8_t *)buf, len);
 
     os_printf("ESP8266 sending request header\r\n");
-    os_printf(buf);
+    os_printf("%s", buf);
 
     req->headers = NULL;
 }

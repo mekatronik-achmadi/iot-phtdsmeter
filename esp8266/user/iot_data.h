@@ -29,7 +29,9 @@
 #define OFSET_T     0
 #define OFSET_TDS   0
 
-void run_loop(uint8 interval);
+#include <stdint.h>
+
+void run_loop(uint8_t interval);
 
 #endif // IOT_DATA_H
 /** @} */
